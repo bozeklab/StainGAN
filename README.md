@@ -26,11 +26,13 @@ Patches can be found here: https://campowncloud.in.tum.de/index.php/s/iGgQ9vdHiM
 ## Citation
 If you use this code for your research, please cite our papers.
 ```
-@article{shaban2018staingan,
-  title={StainGAN: Stain Style Transfer for Digital Histological Images},
+@inproceedings{shaban2019staingan,
+  title={Staingan: Stain style transfer for digital histological images},
   author={Shaban, M Tarek and Baur, Christoph and Navab, Nassir and Albarqouni, Shadi},
-  journal={arXiv preprint arXiv:1804.01601},
-  year={2018}
+  booktitle={2019 Ieee 16th international symposium on biomedical imaging (Isbi 2019)},
+  pages={953--956},
+  year={2019},
+  organization={IEEE}
 }
 ```
 
