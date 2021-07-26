@@ -6,12 +6,14 @@ from PIL import Image
 import PIL
 import random
 
+
 class UnalignedDataset(BaseDataset):
     def initialize(self, opt):
         self.opt = opt
         self.root = opt.dataroot
-        self.dir_A = os.path.join(opt.dataroot, opt.phase + 'A')
-        self.dir_B = os.path.join(opt.dataroot, opt.phase + 'B')
+        self.dir_A = os.path.join(opt.dataroot, opt.phaseA)
+        self.dir_B = os.path.join(opt.dataroot, opt.phaseB)
+        print(self.dir_A, self.dir_B)
 
         self.A_paths = make_dataset(self.dir_A)
         self.B_paths = make_dataset(self.dir_B)
