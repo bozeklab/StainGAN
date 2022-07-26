@@ -5,6 +5,8 @@ from data.image_folder import make_dataset
 from PIL import Image
 import PIL
 import random
+from torch.utils.data import WeightedRandomSampler
+from data.sampling_weights import get_weights
 
 
 class UnalignedDataset(BaseDataset):
@@ -24,13 +26,22 @@ class UnalignedDataset(BaseDataset):
         self.B_size = len(self.B_paths)
         self.transform = get_transform(opt)
 
+        print(self.A_size, self.B_size)
+
+        self.samplerB = WeightedRandomSampler(get_weights(opt.csvB), opt.epoch_len, replacement=True)
+        self.epoch_len = opt.epoch_len
+        self.current_sample = opt.epoch_len
+
     def __getitem__(self, index):
-        A_path = self.A_paths[index % self.A_size]
         index_A = index % self.A_size
-        if self.opt.serial_batches:
-            index_B = index % self.B_size
-        else:
-            index_B = random.randint(0, self.B_size - 1)
+        index_B = self.next_B_index() % self.B_size
+
+        # if self.opt.serial_batches:
+        #     index_B = index % self.B_size
+        # else:
+        #     index_B = random.randint(0, self.B_size - 1)
+
+        A_path = self.A_paths[index_A]
         B_path = self.B_paths[index_B]
         # print('(A, B) = (%d, %d)' % (index_A, index_B))
         A_img = Image.open(A_path).convert('RGB')
@@ -54,6 +65,14 @@ class UnalignedDataset(BaseDataset):
             B = tmp.unsqueeze(0)
         return {'A': A, 'B': B,
                 'A_paths': A_path, 'B_paths': B_path}
+
+    def next_B_index(self):
+        if self.current_sample >= self.epoch_len:
+            self.B_samples = list(self.samplerB)
+            self.current_sample = 0
+        ans = self.B_samples[self.current_sample]
+        self.current_sample += 1
+        return ans 
 
     def __len__(self):
         return max(self.A_size, self.B_size)

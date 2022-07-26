@@ -43,6 +43,7 @@ class CycleGANModel(BaseModel):
                                             opt.n_layers_D, opt.norm, use_sigmoid, opt.init_type, self.gpu_ids)
         if not self.isTrain or opt.continue_train:
             which_epoch = opt.which_epoch
+            print("LOADING LATEST TRAINING")
             self.load_network(self.netG_A, 'G_A', which_epoch)
             self.load_network(self.netG_B, 'G_B', which_epoch)
             if self.isTrain:
@@ -88,8 +89,8 @@ class CycleGANModel(BaseModel):
         input_A = input['A' if AtoB else 'B']
         input_B = input['B' if AtoB else 'A']
         if len(self.gpu_ids) > 0:
-            input_A = input_A.cuda(self.gpu_ids[0], async=True)
-            input_B = input_B.cuda(self.gpu_ids[0], async=True)
+            input_A = input_A.cuda(self.gpu_ids[0])
+            input_B = input_B.cuda(self.gpu_ids[0])
         self.input_A = input_A
         self.input_B = input_B
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
@@ -97,6 +98,11 @@ class CycleGANModel(BaseModel):
     def forward(self):
         self.real_A = Variable(self.input_A)
         self.real_B = Variable(self.input_B)
+
+    def forward_direct(self, input_A):
+        fake_B = self.netG_A(input_A)
+        rec_A = self.netG_B(fake_B).data
+        return fake_B.data, rec_A.data
 
     def test(self):
         real_A = Variable(self.input_A, volatile=True)
@@ -129,12 +135,12 @@ class CycleGANModel(BaseModel):
     def backward_D_A(self):
         fake_B = self.fake_B_pool.query(self.fake_B)
         loss_D_A = self.backward_D_basic(self.netD_A, self.real_B, fake_B)
-        self.loss_D_A = loss_D_A.data[0]
+        self.loss_D_A = loss_D_A
 
     def backward_D_B(self):
         fake_A = self.fake_A_pool.query(self.fake_A)
         loss_D_B = self.backward_D_basic(self.netD_B, self.real_A, fake_A)
-        self.loss_D_B = loss_D_B.data[0]
+        self.loss_D_B = loss_D_B
 
     def backward_G(self):
         lambda_idt = self.opt.identity
@@ -151,8 +157,8 @@ class CycleGANModel(BaseModel):
 
             self.idt_A = idt_A.data
             self.idt_B = idt_B.data
-            self.loss_idt_A = loss_idt_A.data[0]
-            self.loss_idt_B = loss_idt_B.data[0]
+            self.loss_idt_A = loss_idt_A
+            self.loss_idt_B = loss_idt_B
         else:
             loss_idt_A = 0
             loss_idt_B = 0
@@ -177,6 +183,7 @@ class CycleGANModel(BaseModel):
         # Backward cycle loss
         rec_B = self.netG_A(fake_A)
         loss_cycle_B = self.criterionCycle(rec_B, self.real_B) * lambda_B
+
 
         # aicha forward
         if self.opt.aicha_loss:
@@ -236,17 +243,17 @@ class CycleGANModel(BaseModel):
         self.rec_A = rec_A.data
         self.rec_B = rec_B.data
 
-        self.loss_G_A = loss_G_A.data[0]
-        self.loss_G_B = loss_G_B.data[0]
+        self.loss_G_A = loss_G_A
+        self.loss_G_B = loss_G_B
 
         if self.opt.aicha_loss:
             # AichaLoss
-            self.loss_Aicha_A = loss_Aicha_A.data[0]
-            self.loss_Aicha_B = loss_Aicha_B.data[0]
+            self.loss_Aicha_A = loss_Aicha_A
+            self.loss_Aicha_B = loss_Aicha_B
         else:
             # cycleLoss
-            self.loss_cycle_A = loss_cycle_A.data[0]
-            self.loss_cycle_B = loss_cycle_B.data[0]
+            self.loss_cycle_A = loss_cycle_A
+            self.loss_cycle_B = loss_cycle_B
 
     #
     # def get_gradient(self, img):

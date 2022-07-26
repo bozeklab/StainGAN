@@ -3,6 +3,9 @@ StainGAN implementation based on Cycle-Consistency Concept
 
 For more information visit website.
 
+This implementation is ZMMK adapted fork. Some of the original features, for example visualization, were deemed unnecessary at the moment.
+Further improvement of this repository should include some customized metrics and logging.
+
 ## Structure
  * Stain-Transfer Model
  * Pre-processing.

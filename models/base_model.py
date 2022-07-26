@@ -19,6 +19,8 @@ class BaseModel():
     def forward(self):
         pass
 
+    def forward_direct(self, inputA):
+        pass
     # used in test time, no backprop
     def test(self):
         pass
@@ -57,8 +59,7 @@ class BaseModel():
         for scheduler in self.schedulers:
             scheduler.step()
         lr = self.optimizers[0].param_groups[0]['lr']
+        print('learning rate = %.7f' % lr)
         if (lr <= 0):
-            print('A7A  IS 0 55555  learning rate = %.7f' % lr)
             print("EXITING TRAINING BECAUSE LR IS <0")
             sys.exit()
-        print('learning rate = %.7f' % lr)
