@@ -21,6 +21,25 @@ transforms = get_transform(opt)
 BASE_PATH = "/data/shared/her2-images/test-set-external"
 img_paths = [os.path.join(BASE_PATH, f) for f in os.listdir(BASE_PATH) if os.path.isfile(os.path.join(BASE_PATH, f))]
 
+# img_paths = [
+#     "/data/shared/her2-images/test-set-external/400-1.jpg",
+#     "/data/shared/her2-images/test-set-external/96-3.jpg",
+#     "/data/shared/her2-images/test-set-external/101-3.jpg",
+#     "/data/shared/her2-images/test-set-external/58-1.jpg",
+#     "/data/shared/her2-images/test-set-external/133-3.jpg",
+#     "/data/shared/her2-images/test-set-external/136-2.jpg",
+#     "/data/shared/her2-images/test-set-external/136-3.jpg",
+#     "/data/shared/her2-images/test-set-external/212-3.jpg",
+#     "/data/shared/her2-images/test-set-external/425-1.jpg",
+#     "/data/shared/her2-images/test-set-external/425-2.jpg",
+#     "/data/shared/her2-images/test-set-external/273-1.jpg",
+#     "/data/shared/her2-images/test-set-external/65-1.jpg",
+#     "/data/shared/her2-images/test-set-external/68-1.jpg",
+#     "/data/shared/her2-images/test-set-external/108-2.jpg",
+#     "/data/shared/her2-images/test-set-external/108-1.jpg",
+#     "/data/shared/her2-images/test-set-external/99-1.jpg",
+# ]
+
 # test
 start_time = time.time()
 TARGET_SIZE = 256
