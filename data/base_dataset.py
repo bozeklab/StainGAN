@@ -12,7 +12,7 @@ class BaseDataset(data.Dataset):
     def initialize(self, opt):
         pass
 
-def get_transform(opt):
+def get_transform(opt, means = [0.5, 0.5, 0.5], stds = [0.5, 0.5, 0.5]):
     transform_list = []
     if opt.resize_or_crop == 'resize_and_crop':
         osize = [opt.loadSize, opt.loadSize]
@@ -32,8 +32,8 @@ def get_transform(opt):
         transform_list.append(transforms.RandomHorizontalFlip())
 
     transform_list += [transforms.ToTensor(),
-                       transforms.Normalize((0.5, 0.5, 0.5),
-                                            (0.5, 0.5, 0.5))]
+                       transforms.Normalize(means,
+                                            stds)]
     return transforms.Compose(transform_list)
 
 def __scale_width(img, target_width):

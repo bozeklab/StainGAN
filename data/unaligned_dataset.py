@@ -24,7 +24,9 @@ class UnalignedDataset(BaseDataset):
         self.B_paths = sorted(self.B_paths)
         self.A_size = len(self.A_paths)
         self.B_size = len(self.B_paths)
-        self.transform = get_transform(opt)
+
+        self.transformA = get_transform(opt, means= [0.6767, 0.6695, 0.6737], stds = [0.1475, 0.1356, 0.1276])
+        self.transformB = get_transform(opt, means= [0.8639, 0.8618, 0.8986], stds = [0.0758, 0.0765, 0.0675])
 
         print(self.A_size, self.B_size)
 
@@ -47,8 +49,8 @@ class UnalignedDataset(BaseDataset):
         A_img = Image.open(A_path).convert('RGB')
         B_img = Image.open(B_path).convert('RGB')
 
-        A = self.transform(A_img)
-        B = self.transform(B_img)
+        A = self.transformA(A_img)
+        B = self.transformB(B_img)
         if self.opt.which_direction == 'BtoA':
             input_nc = self.opt.output_nc
             output_nc = self.opt.input_nc
