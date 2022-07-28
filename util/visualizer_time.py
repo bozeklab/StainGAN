@@ -3,7 +3,6 @@ import os
 import ntpath
 import time
 from . import util
-from . import html
 # from scipy.misc import imresize
 from PIL import Image
 import matplotlib.pyplot as plt
