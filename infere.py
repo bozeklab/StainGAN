@@ -55,7 +55,7 @@ TARGET_SIZE = 256
 STRIDE_SIZE = TARGET_SIZE // 2
 model = create_model(opt)
 
-RESULT_VERSION = "v5"
+RESULT_VERSION = "v6"
 RESULT_PATH = os.path.join("/data/khusiaty/result", RESULT_VERSION)
 if not os.path.exists(RESULT_PATH):
         os.makedirs(RESULT_PATH)
@@ -135,8 +135,8 @@ for path in img_paths:
 
     fake = fake[0]
 
-    for i in range(3):
-        fake[i, ...] = fake[i, ...] * new_stds[i] + new_means[i]
+    # for i in range(3):
+    #     fake[i, ...] = fake[i, ...] * new_stds[i] + new_means[i]
 
     torchvision.utils.save_image(fake, os.path.join(new_path, "fake.jpg"))
     torchvision.utils.save_image(cycle, os.path.join(new_path, "cycle.jpg"))
