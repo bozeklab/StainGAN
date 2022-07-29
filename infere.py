@@ -16,14 +16,15 @@ opt.batchSize = 1  # test code only supports batchSize = 1
 opt.serial_batches = True  # no shuffle
 opt.no_flip = True  # no flip
 
-
+# [tensor(0.8652), tensor(0.8628), tensor(0.8992)] [tensor(0.0824), tensor(0.0866), tensor(0.0806)] uniklinik test
+# [tensor(0.8811), tensor(0.8758), tensor(0.9151)] [tensor(0.0732), tensor(0.0782), tensor(0.0758)] uniklinik test-val
 means= [0.6770, 0.6700, 0.6744]
-stds = [0.9711, 0.9596, 0.9650]
+stds = [0.1621, 0.1518, 0.1473]
 # means= [0.6767, 0.6695, 0.6737]
 # stds = [0.1475, 0.1356, 0.1276]
 
-new_means= [0.8639, 0.8618, 0.8986]
-new_stds = [0.0758, 0.0765, 0.0675]
+new_means= [0.8811, 0.8758, 0.9151]
+new_stds = [0.0824, 0.0732, 0.0758]
 transforms = get_transform(opt, means=means, stds = stds)
 
 BASE_PATH = "/data/shared/her2-images/test-set-external"

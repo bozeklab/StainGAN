@@ -25,8 +25,8 @@ class UnalignedDataset(BaseDataset):
         self.A_size = len(self.A_paths)
         self.B_size = len(self.B_paths)
 
-        self.transformA = get_transform(opt, means= [0.6767, 0.6695, 0.6737], stds = [0.1475, 0.1356, 0.1276])
-        self.transformB = get_transform(opt, means= [0.8639, 0.8618, 0.8986], stds = [0.0758, 0.0765, 0.0675])
+        self.transformA = get_transform(opt, means= [0.6770, 0.6700, 0.6744], stds = [0.1621, 0.1518, 0.1473])
+        self.transformB = get_transform(opt, means= [0.8811, 0.8758, 0.9151], stds = [0.0824, 0.0732, 0.0758])
 
         print(self.A_size, self.B_size)
 
