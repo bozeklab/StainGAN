@@ -17,8 +17,11 @@ opt.serial_batches = True  # no shuffle
 opt.no_flip = True  # no flip
 
 
-means= [0.6767, 0.6695, 0.6737]
-stds = [0.1475, 0.1356, 0.1276]
+means= [0.6770, 0.6700, 0.6744]
+stds = [0.9711, 0.9596, 0.9650]
+# means= [0.6767, 0.6695, 0.6737]
+# stds = [0.1475, 0.1356, 0.1276]
+
 new_means= [0.8639, 0.8618, 0.8986]
 new_stds = [0.0758, 0.0765, 0.0675]
 transforms = get_transform(opt, means=means, stds = stds)
@@ -129,8 +132,10 @@ for path in img_paths:
     fake = fake / divisor
     cycle = cycle / divisor
 
+    fake = fake[0]
+
     for i in range(3):
-        fake[0, i, ...] = fake[0, i, ...] * new_stds[i] + new_means[i]
+        fake[i, ...] = fake[i, ...] * new_stds[i] + new_means[i]
 
     torchvision.utils.save_image(fake, os.path.join(new_path, "fake.jpg"))
     torchvision.utils.save_image(cycle, os.path.join(new_path, "cycle.jpg"))
