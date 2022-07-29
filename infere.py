@@ -16,29 +16,34 @@ opt.batchSize = 1  # test code only supports batchSize = 1
 opt.serial_batches = True  # no shuffle
 opt.no_flip = True  # no flip
 
-transforms = get_transform(opt)
+
+means= [0.6767, 0.6695, 0.6737]
+stds = [0.1475, 0.1356, 0.1276]
+new_means= [0.8639, 0.8618, 0.8986]
+new_stds = [0.0758, 0.0765, 0.0675]
+transforms = get_transform(opt, means=means, stds = stds)
 
 BASE_PATH = "/data/shared/her2-images/test-set-external"
-img_paths = [os.path.join(BASE_PATH, f) for f in os.listdir(BASE_PATH) if os.path.isfile(os.path.join(BASE_PATH, f))]
+# img_paths = [os.path.join(BASE_PATH, f) for f in os.listdir(BASE_PATH) if os.path.isfile(os.path.join(BASE_PATH, f))]
 
-# img_paths = [
-#     "/data/shared/her2-images/test-set-external/400-1.jpg",
-#     "/data/shared/her2-images/test-set-external/96-3.jpg",
-#     "/data/shared/her2-images/test-set-external/101-3.jpg",
-#     "/data/shared/her2-images/test-set-external/58-1.jpg",
-#     "/data/shared/her2-images/test-set-external/133-3.jpg",
-#     "/data/shared/her2-images/test-set-external/136-2.jpg",
-#     "/data/shared/her2-images/test-set-external/136-3.jpg",
-#     "/data/shared/her2-images/test-set-external/212-3.jpg",
-#     "/data/shared/her2-images/test-set-external/425-1.jpg",
-#     "/data/shared/her2-images/test-set-external/425-2.jpg",
-#     "/data/shared/her2-images/test-set-external/273-1.jpg",
-#     "/data/shared/her2-images/test-set-external/65-1.jpg",
-#     "/data/shared/her2-images/test-set-external/68-1.jpg",
-#     "/data/shared/her2-images/test-set-external/108-2.jpg",
-#     "/data/shared/her2-images/test-set-external/108-1.jpg",
-#     "/data/shared/her2-images/test-set-external/99-1.jpg",
-# ]
+img_paths = [
+    "/data/shared/her2-images/test-set-external/400-1.jpg",
+    "/data/shared/her2-images/test-set-external/96-3.jpg",
+    "/data/shared/her2-images/test-set-external/101-3.jpg",
+    "/data/shared/her2-images/test-set-external/58-1.jpg",
+    "/data/shared/her2-images/test-set-external/133-3.jpg",
+    "/data/shared/her2-images/test-set-external/136-2.jpg",
+    "/data/shared/her2-images/test-set-external/136-3.jpg",
+    "/data/shared/her2-images/test-set-external/212-3.jpg",
+    "/data/shared/her2-images/test-set-external/425-1.jpg",
+    "/data/shared/her2-images/test-set-external/425-2.jpg",
+    "/data/shared/her2-images/test-set-external/273-1.jpg",
+    "/data/shared/her2-images/test-set-external/65-1.jpg",
+    "/data/shared/her2-images/test-set-external/68-1.jpg",
+    "/data/shared/her2-images/test-set-external/108-2.jpg",
+    "/data/shared/her2-images/test-set-external/108-1.jpg",
+    "/data/shared/her2-images/test-set-external/99-1.jpg",
+]
 
 # test
 start_time = time.time()
@@ -46,8 +51,8 @@ TARGET_SIZE = 256
 STRIDE_SIZE = TARGET_SIZE // 2
 model = create_model(opt)
 
-RESULT_VERSION = "full-v2"
-RESULT_PATH = os.path.join("~/result", RESULT_VERSION)
+RESULT_VERSION = "v5"
+RESULT_PATH = os.path.join("/data/khusiaty/result", RESULT_VERSION)
 if not os.path.exists(RESULT_PATH):
         os.makedirs(RESULT_PATH)
 
@@ -123,6 +128,9 @@ for path in img_paths:
 
     fake = fake / divisor
     cycle = cycle / divisor
+
+    for i in range(3):
+        fake[0, i, ...] = fake[0, i, ...] * new_stds[i] + new_means[i]
 
     torchvision.utils.save_image(fake, os.path.join(new_path, "fake.jpg"))
     torchvision.utils.save_image(cycle, os.path.join(new_path, "cycle.jpg"))
