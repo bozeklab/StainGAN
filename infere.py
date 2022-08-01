@@ -55,7 +55,7 @@ TARGET_SIZE = 256
 STRIDE_SIZE = TARGET_SIZE // 2
 model = create_model(opt)
 
-RESULT_VERSION = "v6"
+RESULT_VERSION = "v7"
 RESULT_PATH = os.path.join("/data/khusiaty/result", RESULT_VERSION)
 if not os.path.exists(RESULT_PATH):
         os.makedirs(RESULT_PATH)
