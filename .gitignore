@@ -1,2 +1,7 @@
 website
 __pycache__
+
+./checkpoints
+!./checkpoints/.gitkeep
+./logs
+!./logs/.gitkeep
