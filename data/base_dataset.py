@@ -31,9 +31,9 @@ def get_transform(opt, means = [0.5, 0.5, 0.5], stds = [0.5, 0.5, 0.5]):
     if opt.isTrain and not opt.no_flip:
         transform_list.append(transforms.RandomHorizontalFlip())
 
-    transform_list += [transforms.ToTensor(),
-                       transforms.Normalize(means,
-                                            stds)]
+    transform_list += [transforms.ToTensor()#,
+                    #    transforms.Normalize(means, stds)
+                       ]
     return transforms.Compose(transform_list)
 
 def __scale_width(img, target_width):
