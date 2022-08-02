@@ -28,26 +28,26 @@ new_stds = [0.0824, 0.0732, 0.0758]
 transforms = get_transform(opt, means=means, stds = stds)
 
 BASE_PATH = "/data/shared/her2-images/test-set-external"
-# img_paths = [os.path.join(BASE_PATH, f) for f in os.listdir(BASE_PATH) if os.path.isfile(os.path.join(BASE_PATH, f))]
+img_paths = [os.path.join(BASE_PATH, f) for f in os.listdir(BASE_PATH) if os.path.isfile(os.path.join(BASE_PATH, f))]
 
-img_paths = [
-    "/data/shared/her2-images/test-set-external/400-1.jpg",
-    "/data/shared/her2-images/test-set-external/96-3.jpg",
-    "/data/shared/her2-images/test-set-external/101-3.jpg",
-    "/data/shared/her2-images/test-set-external/58-1.jpg",
-    "/data/shared/her2-images/test-set-external/133-3.jpg",
-    "/data/shared/her2-images/test-set-external/136-2.jpg",
-    "/data/shared/her2-images/test-set-external/136-3.jpg",
-    "/data/shared/her2-images/test-set-external/212-3.jpg",
-    "/data/shared/her2-images/test-set-external/425-1.jpg",
-    "/data/shared/her2-images/test-set-external/425-2.jpg",
-    "/data/shared/her2-images/test-set-external/273-1.jpg",
-    "/data/shared/her2-images/test-set-external/65-1.jpg",
-    "/data/shared/her2-images/test-set-external/68-1.jpg",
-    "/data/shared/her2-images/test-set-external/108-2.jpg",
-    "/data/shared/her2-images/test-set-external/108-1.jpg",
-    "/data/shared/her2-images/test-set-external/99-1.jpg",
-]
+# img_paths = [
+#     "/data/shared/her2-images/test-set-external/400-1.jpg",
+#     "/data/shared/her2-images/test-set-external/96-3.jpg",
+#     "/data/shared/her2-images/test-set-external/101-3.jpg",
+#     "/data/shared/her2-images/test-set-external/58-1.jpg",
+#     "/data/shared/her2-images/test-set-external/133-3.jpg",
+#     "/data/shared/her2-images/test-set-external/136-2.jpg",
+#     "/data/shared/her2-images/test-set-external/136-3.jpg",
+#     "/data/shared/her2-images/test-set-external/212-3.jpg",
+#     "/data/shared/her2-images/test-set-external/425-1.jpg",
+#     "/data/shared/her2-images/test-set-external/425-2.jpg",
+#     "/data/shared/her2-images/test-set-external/273-1.jpg",
+#     "/data/shared/her2-images/test-set-external/65-1.jpg",
+#     "/data/shared/her2-images/test-set-external/68-1.jpg",
+#     "/data/shared/her2-images/test-set-external/108-2.jpg",
+#     "/data/shared/her2-images/test-set-external/108-1.jpg",
+#     "/data/shared/her2-images/test-set-external/99-1.jpg",
+# ]
 
 # test
 start_time = time.time()
@@ -55,7 +55,7 @@ TARGET_SIZE = 256
 STRIDE_SIZE = TARGET_SIZE // 2
 model = create_model(opt)
 
-RESULT_VERSION = "v8"
+RESULT_VERSION = "v8-full"
 RESULT_PATH = os.path.join("/data/khusiaty/result", RESULT_VERSION)
 if not os.path.exists(RESULT_PATH):
         os.makedirs(RESULT_PATH)
