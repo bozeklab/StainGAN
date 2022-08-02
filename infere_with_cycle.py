@@ -13,12 +13,40 @@ import torchvision
 opt = TestOptions().parse()
 opt.nThreads = 1  # test code only supports nThreads = 1
 opt.batchSize = 1  # test code only supports batchSize = 1
+opt.serial_batches = True  # no shuffle
 opt.no_flip = True  # no flip
 
+# [tensor(0.8652), tensor(0.8628), tensor(0.8992)] [tensor(0.0824), tensor(0.0866), tensor(0.0806)] uniklinik test
+# [tensor(0.8811), tensor(0.8758), tensor(0.9151)] [tensor(0.0732), tensor(0.0782), tensor(0.0758)] uniklinik test-val
+means= [0.6770, 0.6700, 0.6744]
+stds = [0.1621, 0.1518, 0.1473]
+# means= [0.6767, 0.6695, 0.6737]
+# stds = [0.1475, 0.1356, 0.1276]
+
+new_means= [0.8811, 0.8758, 0.9151]
+new_stds = [0.0824, 0.0732, 0.0758]
 transforms = get_transform(opt, means=means, stds = stds)
 
 BASE_PATH = "/data/shared/her2-images/test-set-external"
-img_paths = [os.path.join(BASE_PATH, f) for f in os.listdir(BASE_PATH) if os.path.isfile(os.path.join(BASE_PATH, f))]
+
+img_paths = [
+    "/data/shared/her2-images/test-set-external/400-1.jpg",
+    "/data/shared/her2-images/test-set-external/96-3.jpg",
+    "/data/shared/her2-images/test-set-external/101-3.jpg",
+    "/data/shared/her2-images/test-set-external/58-1.jpg",
+    "/data/shared/her2-images/test-set-external/133-3.jpg",
+    "/data/shared/her2-images/test-set-external/136-2.jpg",
+    "/data/shared/her2-images/test-set-external/136-3.jpg",
+    "/data/shared/her2-images/test-set-external/212-3.jpg",
+    "/data/shared/her2-images/test-set-external/425-1.jpg",
+    "/data/shared/her2-images/test-set-external/425-2.jpg",
+    "/data/shared/her2-images/test-set-external/273-1.jpg",
+    "/data/shared/her2-images/test-set-external/65-1.jpg",
+    "/data/shared/her2-images/test-set-external/68-1.jpg",
+    "/data/shared/her2-images/test-set-external/108-2.jpg",
+    "/data/shared/her2-images/test-set-external/108-1.jpg",
+    "/data/shared/her2-images/test-set-external/99-1.jpg",
+]
 
 # test
 start_time = time.time()
@@ -26,10 +54,10 @@ TARGET_SIZE = 256
 STRIDE_SIZE = TARGET_SIZE // 2
 model = create_model(opt)
 
-RESULT_VERSION = "v8-full"
+RESULT_VERSION = "v8"
 RESULT_PATH = os.path.join("/data/khusiaty/result", RESULT_VERSION)
 if not os.path.exists(RESULT_PATH):
-    os.makedirs(RESULT_PATH)
+        os.makedirs(RESULT_PATH)
 
 def remove_odd_shape(img):
     n_img = img 
@@ -70,6 +98,9 @@ for path in img_paths:
     padding = get_padding(img)
     
     new_path = os.path.join(RESULT_PATH, path.split("/")[-1])
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
+    torchvision.utils.save_image(img, os.path.join(new_path, "normalized.jpg"))
 
     fold_params = dict(kernel_size=TARGET_SIZE, stride=STRIDE_SIZE, padding=padding)
     unfold = nn.Unfold(**fold_params)
@@ -84,17 +115,30 @@ for path in img_paths:
     pairs = [pass_tensor(model, tensor) for tensor in torch.split(unfolded_img, 32, dim=0)]
 
     fake = [pair[0] for pair in pairs]
+    cycle = [pair[1] for pair in pairs]
+
     fake = torch.cat(fake, dim=0)
+    cycle = torch.cat(cycle, dim=0)
+
     fake = torch.permute(fake, (1,2,3,0))
+    cycle = torch.permute(cycle, (1,2,3,0))
+
     fake = fake.view(unfolded_img_shape)
+    cycle = cycle.view(unfolded_img_shape)
+
     fake = fold(fake) 
+    cycle = fold(cycle)
+
     fake = fake / divisor
+    cycle = cycle / divisor
+
     fake = fake[0]
 
     # for i in range(3):
     #     fake[i, ...] = fake[i, ...] * new_stds[i] + new_means[i]
 
-    torchvision.utils.save_image(fake, new_path)
+    torchvision.utils.save_image(fake, os.path.join(new_path, "fake.jpg"))
+    torchvision.utils.save_image(cycle, os.path.join(new_path, "cycle.jpg"))
 
 elapsed = (time.time() - start_time)
 print("--- %s seconds ---" % round((elapsed ), 2))
