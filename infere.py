@@ -15,7 +15,7 @@ opt.nThreads = 1  # test code only supports nThreads = 1
 opt.batchSize = 1  # test code only supports batchSize = 1
 opt.no_flip = True  # no flip
 
-transforms = get_transform(opt, means=means, stds = stds)
+transforms = get_transform(opt)
 
 BASE_PATH = "/data/shared/her2-images/test-set-external"
 img_paths = [os.path.join(BASE_PATH, f) for f in os.listdir(BASE_PATH) if os.path.isfile(os.path.join(BASE_PATH, f))]
