@@ -104,6 +104,10 @@ class CycleGANModel(BaseModel):
         rec_A = self.netG_B(fake_B).data
         return fake_B.data, rec_A.data
 
+    def forward_simple(self, input_A):
+        fake_B = self.netG_A(input_A)
+        return fake_B.data
+
     def test(self):
         real_A = Variable(self.input_A, volatile=True)
         fake_B = self.netG_A(real_A)

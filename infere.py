@@ -55,12 +55,11 @@ def get_padding(img):
 
 def pass_tensor(model, tensor):
     tensor = tensor.to(torch.cuda.current_device())
-    fake, cycle = model.forward_direct(tensor)
+    fake = model.forward_simple(tensor)
 
     fake = fake.cpu()
-    cycle = cycle.cpu()
 
-    return fake, cycle
+    return fake
 
 for path in img_paths:
     print(path)
@@ -81,9 +80,7 @@ for path in img_paths:
     unfolded_img = unfolded_img.view(3, TARGET_SIZE, TARGET_SIZE, -1)
     unfolded_img = torch.permute(unfolded_img, (3,0,1,2))
 
-    pairs = [pass_tensor(model, tensor) for tensor in torch.split(unfolded_img, 32, dim=0)]
-
-    fake = [pair[0] for pair in pairs]
+    fake = [pass_tensor(model, tensor) for tensor in torch.split(unfolded_img, 32, dim=0)]
     fake = torch.cat(fake, dim=0)
     fake = torch.permute(fake, (1,2,3,0))
     fake = fake.view(unfolded_img_shape)
