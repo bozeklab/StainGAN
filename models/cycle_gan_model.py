@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from collections import OrderedDict
 from torch.autograd import Variable
 import itertools
-import util.util as util
-from util.image_pool import ImagePool
+import StainGAN.util.util as util
+from StainGAN.util.image_pool import ImagePool
 from .base_model import BaseModel
 from . import networks
 import sys
@@ -18,9 +18,6 @@ class CycleGANModel(BaseModel):
 
     def initialize(self, opt):
         BaseModel.initialize(self, opt)
-
-        nb = opt.batchSize
-        size = opt.fineSize
 
         # load/define networks
         # The naming conversion is different from those used in the paper

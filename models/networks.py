@@ -105,7 +105,7 @@ def get_scheduler(optimizer, opt):
 def define_G(input_nc, output_nc, ngf, which_model_netG, norm='batch', use_dropout=False, init_type='normal',
              gpu_ids=[]):
     netG = None
-    use_gpu = len(gpu_ids) > 0
+    use_gpu = len(gpu_ids) > 0 
     norm_layer = get_norm_layer(norm_type=norm)
 
     if use_gpu:
