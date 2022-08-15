@@ -17,4 +17,5 @@ python train.py \
     --model cycle_gan \
     --no_dropout \
     --epoch_len 42300 \
-    --checkpoints_dir ./checkpoints/unnormalized
+    --checkpoints_dir ./checkpoints/stain_net_base \
+    --which_model_netG stainNet

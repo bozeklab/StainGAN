@@ -132,6 +132,8 @@ def define_G(input_nc, output_nc, ngf, which_model_netG, norm='batch', use_dropo
     elif which_model_netG == 'unet_256':
         netG = UnetGenerator(input_nc, output_nc, 8, ngf, norm_layer=norm_layer, use_dropout=use_dropout,
                              gpu_ids=gpu_ids)
+    elif which_model_netG == 'stainNet':
+        netG = StainNet(input_nc, output_nc, ngf)
     else:
         raise NotImplementedError('Generator model name [%s] is not recognized' % which_model_netG)
     if len(gpu_ids) > 0:
@@ -139,6 +141,27 @@ def define_G(input_nc, output_nc, ngf, which_model_netG, norm='batch', use_dropo
     init_weights(netG, init_type=init_type)
     return netG
 
+class StainNet(nn.Module):
+    def __init__(self):
+        super(StainNet, self).__init__(input_nc, output_nc, ngf)
+
+        model_list = []
+
+        n_layer = 3
+        ins = [input_nc] + [ngf] * n_layer
+        outs = [ngf] * n_layer + [output_nc]
+        for c_in, c_out in zip(ins, outs):
+            model_list.append(nn.Conv2d(c_in, c_out, kernel_size=1, bias=True, padding="same"))
+            model_list.append(nn.ReLU(True))
+
+        model_list = model_list[:-1] # remove last ReLU activation
+        self.model = nn.Sequential(*model_list)
+
+    def forward(self, input):
+        if self.gpu_ids and isinstance(input.data, torch.cuda.FloatTensor):
+            return nn.parallel.data_parallel(self.model, input, self.gpu_ids)
+        else:
+            return self.model(input)
 
 def define_D(input_nc, ndf, which_model_netD,
              n_layers_D=3, norm='batch', use_sigmoid=False, init_type='normal', gpu_ids=[]):
