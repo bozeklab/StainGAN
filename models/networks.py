@@ -142,9 +142,9 @@ def define_G(input_nc, output_nc, ngf, which_model_netG, norm='batch', use_dropo
     return netG
 
 class StainNet(nn.Module):
-    def __init__(self, input_nc, output_nc, ngf):
+    def __init__(self, input_nc, output_nc, ngf, gpu_ids=[]):
         super(StainNet, self).__init__()
-
+        self.gpu_ids = gpu_ids
         model_list = []
 
         n_layer = 3
