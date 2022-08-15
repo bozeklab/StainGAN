@@ -142,8 +142,8 @@ def define_G(input_nc, output_nc, ngf, which_model_netG, norm='batch', use_dropo
     return netG
 
 class StainNet(nn.Module):
-    def __init__(self):
-        super(StainNet, self).__init__(input_nc, output_nc, ngf)
+    def __init__(self, input_nc, output_nc, ngf):
+        super(StainNet, self).__init__()
 
         model_list = []
 
