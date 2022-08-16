@@ -24,6 +24,7 @@ class TrainOptions(BaseOptions):
         self.parser.add_argument('--niter_decay', type=int, default=100, help='# of iter to linearly decay learning rate to zero')
         self.parser.add_argument('--beta1', type=float, default=0.5, help='momentum term of adam')
         self.parser.add_argument('--lr', type=float, default=0.00002, help='initial learning rate for adam')
+        self.parser.add_argument('--gen_lr_mult', type=float, default=1, help='initial lr of generative network will be multiplied by this value')
         self.parser.add_argument('--no_lsgan', action='store_true', help='do *not* use least square GAN, if false, use vanilla GAN')
         self.parser.add_argument('--lambda_Aicha', type=float, default=10.0, help='weight for aicha loss (A -> B -> A)')
         self.parser.add_argument('--lambda_A', type=float, default=10.0, help='weight for cycle loss (A -> B -> A)')
