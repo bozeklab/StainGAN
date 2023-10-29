@@ -1,8 +1,8 @@
 python train.py \
-    --dataroot  ../unfolding/unfolded \
+    --dataroot $ENV_DATAROOT \
     --display_id 0  \
-    --csvA ../unfolding/csvs/test_external_cropped.csv \
-    --csvB ../unfolding/csvs/train_cropped.csv \
+    --csvA $ENV_CSVA \
+    --csvB $ENC_CCVB \
     --phaseA test-set-external  \
     --phaseB train-val  \
     --batchSize 4 \
@@ -12,10 +12,11 @@ python train.py \
     --niter_decay 25 \
     --loadSize 256 \
     --fineSize 256 \
-    --name uniklinik_external \
+    --resize_or_crop crop \
+    --name $ENV_NAME \
     --gpu_ids 0 \
     --model cycle_gan \
     --no_dropout \
-    --epoch_len 42300 \
-    --checkpoints_dir ./checkpoints/stain_net_base \
-    --which_model_netG stainNet
+    --epoch_len 40000 \
+    --checkpoints_dir $ENV_CHECKPOINT_DIR \
+    --which_model_netG resnet_9blocks
