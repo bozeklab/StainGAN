@@ -1,10 +1,10 @@
 python train.py \
     --dataroot $ENV_DATAROOT \
     --display_id 0  \
-    --csvA $ENV_CSVA \
-    --csvB $ENC_CCVB \
-    --phaseA test-set-external  \
-    --phaseB train-val  \
+    --csvA $ENV_CSV_A \
+    --csvB $ENC_CCV_B \
+    --phaseA $ENV_PHASE_A  \
+    --phaseB $ENV_PHASE_B  \
     --batchSize 4 \
     --lr 0.00001 \
     --niter 25  \
@@ -12,6 +12,8 @@ python train.py \
     --niter_decay 25 \
     --loadSize 256 \
     --fineSize 256 \
+    --save_latest_freq 100000 \
+    --save_epoch_freq 7 \
     --resize_or_crop crop \
     --name $ENV_NAME \
     --gpu_ids 0 \
