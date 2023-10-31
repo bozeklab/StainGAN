@@ -2,7 +2,7 @@ python train.py \
     --dataroot $ENV_DATAROOT \
     --display_id 0  \
     --csvA $ENV_CSV_A \
-    --csvB $ENC_CSV_B \
+    --csvB $ENV_CSV_B \
     --phaseA $ENV_PHASE_A  \
     --phaseB $ENV_PHASE_B  \
     --batchSize 4 \
