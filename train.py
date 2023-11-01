@@ -21,6 +21,7 @@ print("#"*30)
 for epoch in range(opt.epoch_count, opt.niter + opt.niter_decay):
     epoch_start_time = time.time()
     epoch_iter = 0
+    print("Epoch", epoch_iter)
 
     for i, data in enumerate(dataset):
         iter_start_time = time.time()
